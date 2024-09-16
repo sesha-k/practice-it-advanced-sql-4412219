@@ -20,3 +20,21 @@ VALUES
     (1, '2023-01-18', 'Product C', 1, 50.75),
     (2, '2023-01-20', 'Product B', 3, 112.50),
     (3, '2023-01-22', 'Product A', 2, 75.00);
+
+
+select CustomerID,
+SUM(Amount) as TotalPurchaseAmount,
+RANK() OVER(ORDER BY SUM(Amount) desc) as 'CustomerRank' 
+from Orders
+group by CustomerID
+ORDER BY CustomerRank
+limit 3
+
+select OrderID,
+Quantity,
+COALESCE(LAG(Quantity) OVER(ORDER BY OrderDate),0) as 'PreviousOrder',
+Quantity-COALESCE(LAG(Quantity) OVER(ORDER BY OrderDate),0) AS 'OrderDifference'
+from Orders
+order by OrderDate
+
+

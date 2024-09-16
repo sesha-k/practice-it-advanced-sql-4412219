@@ -30,3 +30,28 @@ VALUES
     ('Michael', 'Johnson', 3, 80000.00, '2023-03-10'),
     ('Emily', 'Williams', 1, 55000.00, '2023-04-05'),
     ('David', 'Brown', 4, 70000.00, '2023-05-12');
+
+
+--Employees With salary greater than their dept average
+
+select e.EmployeeID,e.Salary,CONCAT(e.FirstName,' ',e.LastName)  as 'Employee Name'
+from
+Employees e inner join Departments d
+using(DepartmentID)
+
+where e.Salary>(select AVG(Salary) as 'AverageSalary'
+from Departments left join Employees using (DepartmentID)
+WHERE e.DepartmentID=DepartmentID)
+
+--Max Salary by dept other than "IT"
+
+select e.EmployeeID, e.salary , d.DepartmentName
+
+from Employees e inner join Departments d using(DepartmentID)
+
+where d.DepartmentName <> 'IT' and e.Salary=(
+    Select max(salary) 
+    from Employees inner join Departments 
+    using(DepartmentID)
+    where DepartmentName = d.DepartmentName
+    )
