@@ -64,3 +64,25 @@ VALUES
     ('David Wilson', '2023-04-05', 999.99),
     ('Emma Smith', '2023-05-12', 259.75);
 
+supliers-products-unitprice
+
+with cte as(
+    select SupplierName,count(ProductName) as "ProductCount"
+from Suppliers join Products
+using(SupplierID)
+where UnitPrice>(
+    select AVG(UnitPrice) from Products)
+group by SupplierName
+)
+
+select cte.SupplierName as "Supplier",cte.ProductCount as "Product Count"
+
+from cte order by 2 desc
+
+with stockqtyCTE as (
+    select p.ProductName as "Product", p.StockQuantity as "Quantity",c.CategoryName as "Category"
+    from Products p inner join Categories c
+    using(CategoryID)
+)
+select * from stockqtyCTE
+where Quantity<50
