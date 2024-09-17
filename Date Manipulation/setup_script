@@ -15,3 +15,11 @@ VALUES
     ('Art Exhibition', '2023-09-10', 'Art Gallery', 10.00),
     ('Sports Tournament', '2023-10-05', 'Stadium', 35.00),
     ('Holiday Gala', '2023-12-20', 'Grand Hotel', 75.00);
+
+with cte as(
+    select e1.EventName as "Event1 Name",e2.EventName as "Event2 Name",e1.EventDate as "Event1",e2.EventDate as "Event2"
+    from Events e1 join Events e2 on e1.EventDate<e2.EventDate
+
+)
+select *, MAX(JULIANDAY(Event2)-JULIANDAY(Event1)) as longestGap
+from cte
